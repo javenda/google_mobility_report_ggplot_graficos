@@ -1,3 +1,4 @@
+#ejecutar al inicio esta dos lineas de codigo para cargar informacion
 source('01_funciones_descarga.R')
 source('02_funciones_generacion_graficos.R')
 ###############parametros generacion de graficos
@@ -22,7 +23,7 @@ gg_barra(c('Argentina'),sub_nac=FALSE,
          hitos=FALSE)
 
 #2) comparacion lineas entre dos elementos de un pais
-gg_lineas(c('Argentina'),
+gg_lineas(c('Paraguay'),
           sub_nac=FALSE,
           post=FALSE, 
           weekend=TRUE, 
@@ -84,6 +85,21 @@ gg_animado_paises(c('Venezuela','United States','Italy','Spain'),
                   hitos=TRUE)
 
 ##################################################
+#ejemplo multiplot
+p1 <- gg_comp_regiones_pais('Colombia',
+                            sub_nac=c('North Santander','Tolima'),
+                            elemento='supermercados_y_farmacias',
+                            hitos=TRUE) 
+p2 <- gg_comp_paises(paises=c('Argentina','United States','Venezuela'),
+                     sub_nac=FALSE,
+                     post=FALSE, 
+                     weekend=TRUE, 
+                     #inicio='2020-04-01',
+                     fin='2020-05-14',
+                     elemento='parques',
+                     hitos=TRUE)
+
+multiplot(p1,p2)
 
 
 #############funciones y listados de ayuda
