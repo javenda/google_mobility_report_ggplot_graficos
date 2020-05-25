@@ -42,8 +42,7 @@ gg_barra <- function(paises,
     aes_string(y=elemento)+
     geom_hline(aes( yintercept=0), color="black", size=.3, alpha=.8)+
     geom_col()+
-    labs(title = paste('Cambios en movilidad: ',nombre_paises),
-         subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
                           ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",
@@ -51,12 +50,17 @@ gg_barra <- function(paises,
          y = "%",
          colour = "País")+
     scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
+    theme(plot.title=element_text(size=rel(1.5),
+                                  lineheight=.9,family="Times",
+                                  face="bold.italic",colour="grey38"))+
     theme(legend.position = 'none')+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_text(data=df_eventos,aes(x=a, label=b , y = posicion_leyenda), colour="black", angle=90, size=1.8)}
 }
+
 
 
 #2 lineas en eje x comparar distintos 'tipos de datos
@@ -98,20 +102,18 @@ gg_lineas <- function(paises,
     
     
     #aes(colour= 'black'))+
-    labs(title = paste('Cambios en movilidad: ',nombre_paises),
-         subtitle = paste('Sector: ',
-                          gsub('_',' ',elemento[1]),' vs.',
-                          gsub('_',' ',elemento[2]) ,". Del ",
-                          format(min(df$fecha),'%d-%m-%Y'),
-                          ' al',
-                          format(max(df$fecha),'%d-%m-%Y')),
+    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+                          ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",
          x = "fecha",
          y = "%",
-         colour = elemento)+
-    theme(legend.position = 'bottom')+
+         colour = "País")+
     scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
+    theme(plot.title=element_text(size=rel(1.5),
+                                  lineheight=.9,family="Times",
+                                  face="bold.italic",colour="grey38"))+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
@@ -157,8 +159,7 @@ gg_comp_paises <- function(paises,
       panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
                                       size = 2, linetype = "solid"))+
     theme(legend.position = 'bottom')+
-    labs(title = paste('Cambios en movilidad: ',nombre_paises),
-         subtitle = paste('Sector: ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
                           ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",
@@ -166,6 +167,10 @@ gg_comp_paises <- function(paises,
          y = "%",
          colour = "País")+
     scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
+    theme(plot.title=element_text(size=rel(1.5),
+                                  lineheight=.9,family="Times",
+                                  face="bold.italic",colour="grey38"))+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
@@ -214,14 +219,18 @@ gg_comp_paises_mismo_plano  <- function(paises,
     theme(
       panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
                                       size = 2, linetype = "solid"))+
-    labs(title = paste('Cambios en movilidad: ',nombre_paises),
-         subtitle = paste('Sector: ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
                           ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
+         #tag = "Gráfico 1",
          x = "fecha",
          y = "%",
          colour = "País")+
     scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    ggtitle(paste('Cambios en movilidad',nombre_paises))+
+    theme(plot.title=element_text(size=rel(1.5),
+                                  lineheight=.9,family="Times",
+                                  face="bold.italic",colour="grey38"))+
     theme(legend.position = 'bottom')+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
@@ -269,15 +278,18 @@ gg_comp_regiones <- lineas <- function(paises,
     theme(
       panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
                                       size = 2, linetype = "solid"))+
-    labs(title = paste('Cambios en movilidad  ',nombre_paises),
-         subtitle = paste('Sector: ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
                           ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
+         #tag = "Gráfico 1",
          x = "fecha",
          y = "%",
          colour = "País")+
-    theme(legend.position = 'bottom')+
     scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    ggtitle(paste('Cambios en movilidad ',nombre_paises))+
+    theme(plot.title=element_text(size=rel(1.5),
+                                  lineheight=.9,family="Times",
+                                  face="bold.italic",colour="grey38"))+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
@@ -326,8 +338,7 @@ gg_comp_regiones_pais <- lineas <- function(paises,
     theme(
       panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
                                       size = 2, linetype = "solid"))+
-    labs(title = paste('Cambios en movilidad  ',nombre_paises),
-         subtitle = paste('Sector: ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
                           ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",
@@ -335,6 +346,10 @@ gg_comp_regiones_pais <- lineas <- function(paises,
          y = "%",
          colour = "País")+
     scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    ggtitle(paste('Cambios en movilidad ',nombre_paises))+
+    theme(plot.title=element_text(size=rel(1.5),
+                                  lineheight=.9,family="Times",
+                                  face="bold.italic",colour="grey38"))+
     theme(legend.position = 'bottom')+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
@@ -389,14 +404,18 @@ gg_animado_paises <- lineas <- function(paises,
     theme(
       panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
                                       size = 2, linetype = "solid"))+
-    labs(title = paste('Cambios en movilidad: ',nombre_paises),
-         subtitle = paste('Sector: ',gsub('_',' ',elemento),". Fecha: {frame_along}") ,
+    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+                          ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",
          x = "fecha",
          y = "%",
          colour = "País")+
     scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
+    theme(plot.title=element_text(size=rel(1.5),
+                                  lineheight=.9,family="Times",
+                                  face="bold.italic",colour="grey38"))+
     #theme(legend.position = 'bottom')+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
@@ -405,3 +424,4 @@ gg_animado_paises <- lineas <- function(paises,
   
   animate(animado, height = height_v, width =width_v)
 }
+
