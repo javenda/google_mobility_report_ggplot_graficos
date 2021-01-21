@@ -49,7 +49,8 @@ gg_barra <- function(paises,
          x = "fecha",
          y = "%",
          colour = "País")+
-    scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    #scale_x_date(date_breaks='1 week',labels = date_format('%d-%m-%Y'))+
+    scale_x_date(date_breaks='4 week',labels = date_format('%m-%Y'))+
     ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
     theme(plot.title=element_text(size=rel(1.5),
                                   lineheight=.9,family="Times",
@@ -109,7 +110,8 @@ gg_lineas <- function(paises,
          x = "fecha",
          y = "%",
          colour = "País")+
-    scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    #scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    scale_x_date(date_breaks='4 week',labels = date_format('%m-%Y'))+
     ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
     theme(plot.title=element_text(size=rel(1.5),
                                   lineheight=.9,family="Times",
@@ -151,33 +153,40 @@ gg_comp_paises <- function(paises,
                       if(sub_nac){paste(sub_nac,collapse = '-')})
   ggplot(df, aes(x=fecha,colour=region) ) +
     aes_string(y=elemento)+
-    geom_line()+
+    geom_line(size=.8)+
     #geom_point()+
-    scale_fill_brewer('set1')+
     geom_hline(aes( yintercept=0), color="black", size=.3, alpha=.8)+
-    theme(
-      panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
-                                      size = 2, linetype = "solid"))+
+    theme_hc()+
+    #theme(panel.background = element_rect( colour = "#6D9EC1",#fill = "snow",
+                                      #size = 2, linetype = "solid"))+
     theme(legend.position = 'bottom')+
-    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
-                          ' al',format(max(df$fecha),'%d-%m-%Y')) ,
+    labs(subtitle = paste('Sector: ',gsub('_',' ',elemento),". desde: ",format(min(df$fecha),'%d-%m-%Y'),
+                          ' hasta:',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",
          x = "fecha",
          y = "%",
          colour = "País")+
-    scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    
+    #scale_color_viridis(discrete = TRUE, option = "D")+
+    #scale_fill_viridis(discrete = TRUE) +
+    #scale_x_date(date_breaks='1 week',labels = date_format('%d-%m-%Y'))+
+    scale_x_date(date_breaks='4 week',labels = date_format('%m-%Y'))+
     ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
     theme(plot.title=element_text(size=rel(1.5),
                                   lineheight=.9,family="Times",
                                   face="bold.italic",colour="grey38"))+
+    theme(panel.background = element_rect(fill = 'grey90', colour = 'red'))+
+    scale_color_manual(values = wes_palette("Royal1", n = length(paises)))+#BottleRocket1,Darjeeling2,Royal1
+    #scale_color_brewer(palette = "Set1")+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
-      geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="orange",linetype="dotted", size=.5, alpha=.5)}+
+      geom_vline(data=df_eventos, mapping=aes(xintercept=a), color="red",linetype="dotted", size=.5, alpha=.5)}+
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_text(data=df_eventos,aes(x=a, label=b , y = posicion_leyenda), colour="black", angle=90, size=1.8)}
 }  
 
-####################
+
+#####################
 #4 comparaciones paises en un mismo plano
 gg_comp_paises_mismo_plano  <- function(paises, 
                                         sub_nac=FALSE,
@@ -226,7 +235,8 @@ gg_comp_paises_mismo_plano  <- function(paises,
          x = "fecha",
          y = "%",
          colour = "País")+
-    scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    #scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    scale_x_date(date_breaks='4 week',labels = date_format('%m-%Y'))+
     ggtitle(paste('Cambios en movilidad',nombre_paises))+
     theme(plot.title=element_text(size=rel(1.5),
                                   lineheight=.9,family="Times",
@@ -285,7 +295,8 @@ gg_comp_regiones <- lineas <- function(paises,
          x = "fecha",
          y = "%",
          colour = "País")+
-    scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    #scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    scale_x_date(date_breaks='4 week',labels = date_format('%m-%Y'))+
     ggtitle(paste('Cambios en movilidad ',nombre_paises))+
     theme(plot.title=element_text(size=rel(1.5),
                                   lineheight=.9,family="Times",
@@ -345,7 +356,8 @@ gg_comp_regiones_pais <- lineas <- function(paises,
          x = "fecha",
          y = "%",
          colour = "País")+
-    scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    #scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    scale_x_date(date_breaks='4 week',labels = date_format('%m-%Y'))+
     ggtitle(paste('Cambios en movilidad ',nombre_paises))+
     theme(plot.title=element_text(size=rel(1.5),
                                   lineheight=.9,family="Times",
@@ -393,25 +405,27 @@ gg_animado_paises <- lineas <- function(paises,
   animado <- ggplot(df, aes(x=fecha,,colour=region) ) +
     aes_string(y=elemento)+
     geom_hline(aes( yintercept=0), color="black", size=.3, alpha=.8)+
-    geom_line()+
+    geom_line(size=.8)+
     geom_point()+
     scale_colour_brewer(palette = 'Set1')+
     #facet_grid(region~.)+
     theme_linedraw()+
-    scale_fill_brewer('set1')+
+    #scale_fill_brewer('set1')+
     transition_reveal(fecha)+
     #labs( title= "En casa / fecha: {frame_along}")+
-    theme(
-      panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
-                                      size = 2, linetype = "solid"))+
-    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
-                          ' al',format(max(df$fecha),'%d-%m-%Y')) ,
+    #theme(panel.background = element_rect(fill = "snow", colour = "#6D9EC1",
+                                      #size = 2, linetype = "solid"))+
+    theme(panel.background = element_rect(fill = 'grey60', colour = 'red'))+
+    labs(subtitle = paste('Sector: ',gsub('_',' ',elemento),". desde: ",format(min(df$fecha),'%d-%m-%Y'),
+                          ' hasta:',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",
          x = "fecha",
          y = "%",
          colour = "País")+
-    scale_x_date(date_breaks='2 week',labels = date_format('%d-%m-%Y'))+
+    #scale_x_date(date_breaks='1 week',labels = date_format('%d-%m-%Y'))+    
+    scale_x_date(date_breaks='4 week',labels = date_format('%m-%Y'))+
+    scale_color_viridis(discrete = TRUE, option = "D")+
     ggtitle(paste('Cambios en movilidad: ',nombre_paises))+
     theme(plot.title=element_text(size=rel(1.5),
                                   lineheight=.9,family="Times",
@@ -422,6 +436,6 @@ gg_animado_paises <- lineas <- function(paises,
     {if (hitos==TRUE & fecha_i<=df_eventos$a[1]& fecha_f>=df_eventos$a[length(df_eventos$a)])
       geom_text(data=df_eventos,aes(x=a, label=b , y = posicion_leyenda), colour="black", angle=90, size=1.8)}
   
-  animate(animado, height = height_v, width =width_v)
-}
-
+  animate(animado, height = height_v, width =width_v,fps=5,end_pause = 15)
+} #end_pause = 30
+#renderer = gifski_renderer(loop = F)

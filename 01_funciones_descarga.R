@@ -83,9 +83,17 @@ dias_laborales <- c('viernes','lunes','jueves','martes','miercoles')
 #descargar datos
 #download.file('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=57b4ac4fc40528e2','Global_Mobility_Report0.csv')
 #download.file ('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=d09f7f6f428c6783','Global_Mobility_Report1.csv')
+#download.file('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=b3ad67084527db32','Global_Mobility_Report2.csv')
+#download.file('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=b8b0c30cbee5f341','Global_Mobility_Report3.csv')
+#download.file('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=c050b74b9ee831a7','Global_Mobility_Report4.csv')
+#download.file('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=31928890d4c9fde9','Global_Mobility_Report5.csv')
+archivo <- 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'
+numero_descarga <- 6
+download.file(archivo,paste0('Global_Mobility_Report',numero_descarga,'.csv'))
+
 
 #cargar datos y transformarlos
-global <- read.csv('Global_Mobility_Report1.csv',stringsAsFactors=FALSE)%>%
+global <- read.csv(paste0('Global_Mobility_Report',numero_descarga,'.csv'),stringsAsFactors=FALSE)%>%
   `colnames<-`(col_names)%>%
   mutate(fecha= as.Date(fecha))%>%
   mutate(sub_reg1,as.character(global$sub_reg1))%>%
@@ -202,3 +210,4 @@ df_eventos <- data.frame(
   a=as.Date(c('2020-04-09','2020-04-12','2020-05-01')),
   b=c('inicio Semana Santa','fin de Semana Santa','Día del trabajador'),
   stringsAsFactors = F)
+
