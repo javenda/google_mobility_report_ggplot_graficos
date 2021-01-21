@@ -42,7 +42,7 @@ gg_barra <- function(paises,
     aes_string(y=elemento)+
     geom_hline(aes( yintercept=0), color="black", size=.3, alpha=.8)+
     geom_col()+
-    labs(subtitle = paste('Sector ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
+    labs(subtitle = paste('Sector: ',gsub('_',' ',elemento),". Del ",format(min(df$fecha),'%d-%m-%Y'),
                           ' al',format(max(df$fecha),'%d-%m-%Y')) ,
          caption = caption,
          #tag = "Gráfico 1",

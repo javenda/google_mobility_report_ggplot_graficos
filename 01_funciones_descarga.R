@@ -1,6 +1,5 @@
 #codigos para graficar los datos del Google Mobility Report (GMR)
 
-
 #funcion cargar paquetes
 carga_paquetes <- function(){
   library(tidyverse)
@@ -13,10 +12,21 @@ carga_paquetes <- function(){
   library(scales)
   library(plyr)
   library(ggrepel)
+  library(rvest)
+  library(viridis)
+  library(wesanderson)
+  library(ggthemes)
+  library(unikn) 
   
 }
+directorios <- list
+
 
 carga_paquetes()
+pal_freiburg_info <- c("#2a6ebb", "#a7c1e3", "#7b2927", "#de3831", "#739600", "#92d400", 
+                       "#4d4f53", "#747678", "#b2b4b3", "#d5d6d2", "#e98300", "#efbd47")
+names(pal_freiburg_info) <- c("mid-blau", "hell-blau", "dark-red", "hell-red", "mid-green", "hell-green", 
+                              "anthrazit", "dark-grey", "mid-grey", "hell-grey", "orange", "gelb")
 
 # Multiple plot function
 #
@@ -69,7 +79,7 @@ inicio_ven <- as.Date('2020-03-17')
 esp <- c('viernes','lunes','sabado','domingo','jueves','martes','miercoles')
 meses <- c('abril','febrero','marzo','mayo', 'junio')
 sur_america <- c('Argentina','Bolivia', 'Brazil','Chile','Colombia','Ecuador','Paraguay','Peru','Uruguay','Venezuela')
-col_names <- c('cod_pais','region',
+col_names0 <- c('cod_pais','region',
                'sub_reg1','sub_reg2',
                'fecha',
                'tiendas_y_ocio',
@@ -78,6 +88,17 @@ col_names <- c('cod_pais','region',
                'estaciones_de_transporte_publico',
                'lugares_de_trabajo',
                'zonas_residenciales')
+
+col_names1 <- c('cod_pais','region',
+               'sub_reg1','sub_reg2',
+               'fecha',
+               'tiendas_y_ocio',
+               'supermercados_y_farmacias',
+               'parques',
+               'estaciones_de_transporte_publico',
+               'lugares_de_trabajo',
+               'zonas_residenciales')
+
 dias_laborales <- c('viernes','lunes','jueves','martes','miercoles')
 
 #descargar datos
@@ -88,12 +109,38 @@ dias_laborales <- c('viernes','lunes','jueves','martes','miercoles')
 #download.file('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=c050b74b9ee831a7','Global_Mobility_Report4.csv')
 #download.file('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv?cachebust=31928890d4c9fde9','Global_Mobility_Report5.csv')
 archivo <- 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'
-numero_descarga <- 6
-download.file(archivo,paste0('Global_Mobility_Report',numero_descarga,'.csv'))
+descarga_GMR <- function(){
+  download.file('https://www.google.com/covid19/mobility/', 'fecha_nueva_html.html', method='curl')
+  fecha_nueva <- read_html('fecha_nueva_html.html')%>%
+    html_node('.report-info-text:nth-child(1)')%>%
+    html_text()%>%
+    substr(.,nchar(.)-10,nchar(.)-1)
+  if (fecha_nueva!=fecha_vieja){
+    download.file(archivo,paste0('reports/GMR_',fecha_nueva,'.csv'), method='curl')
+  #fecha_vieja <- fecha_nueva
+  return(fecha_nueva)
+  }
+  return(fecha_nueva)
+}
 
+fecha_vieja <- descarga_GMR() 
+
+ # download.file('https://www.google.com/covid19/mobility/', 'fecha_nueva_html.html')
+# fecha_nueva <- read_html('fecha_nueva_html.html')%>%
+#   html_node('.report-info-text:nth-child(1)')%>%
+#   html_text()%>%
+#   substr(.,nchar(.)-10,nchar(.)-1)
+# fecha_nueva
+# 
+# archivo <- 'https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv'
+
+
+# numero_descarga <- 6
+#download.file(archivo,paste0('reports/GMR_',fecha_nueva,'.csv'), method = 'curl')
+# https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv
 
 #cargar datos y transformarlos
-global <- read.csv(paste0('Global_Mobility_Report',numero_descarga,'.csv'),stringsAsFactors=FALSE)%>%
+global <- read.csv(paste0('reports/GMR_',fecha_nueva,'.csv'),stringsAsFactors=FALSE)%>%
   `colnames<-`(col_names)%>%
   mutate(fecha= as.Date(fecha))%>%
   mutate(sub_reg1,as.character(global$sub_reg1))%>%
@@ -104,7 +151,15 @@ global <- read.csv(paste0('Global_Mobility_Report',numero_descarga,'.csv'),strin
   mutate(n_mes=month(fecha))%>%
   mutate(mes=as.factor(mapvalues(months(fecha),levels(as.factor(months(fecha))),meses[1:length(levels(as.factor(months(fecha))))])))%>%
   mutate(region=as.factor(as.character(region)))%>%
-  mutate(fecha= as.Date(fecha,"%d/%m/%Y"))
+  mutate(fecha= as.Date(fecha,"%d/%m/%Y"))%>%
+  select(-c('metro_area',"iso_3166_2_code","census_fips_code" ))%>%
+  mutate(region=as.character(region))%>%
+  mutate(mes=as.character(mes))
+
+  
+
+  
+
 
 listado_paises <- levels(global$region)
 
@@ -210,4 +265,13 @@ df_eventos <- data.frame(
   a=as.Date(c('2020-04-09','2020-04-12','2020-05-01')),
   b=c('inicio Semana Santa','fin de Semana Santa','Día del trabajador'),
   stringsAsFactors = F)
+
+latan <- global%>%
+  filter(region %in% c('Argentina', 'Colombia','Venezuela','Paraguay', 'Bolivia','Brazil','Uruguay', 'Chile','Ecuador','Peru')&
+           sub_reg1==''&
+           sub_reg2=='')%>%
+  mutate(region=as.character(region))%>%
+  mutate(mes=as.character(mes))
+
+saveRDS(latan,paste0('latan_',fecha_nueva,'.rds'))
 

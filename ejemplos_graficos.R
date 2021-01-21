@@ -25,7 +25,7 @@ gg_barra(c('Venezuela'),
          sub_nac=FALSE,
          #post=TRUE, 
          weekend=TRUE,
-         inicio='2020-03-15',
+         inicio='2020-09-01',
          #fin='2020-05-27',
          elemento='lugares_de_trabajo',
          hitos=TRUE)
@@ -42,13 +42,13 @@ gg_lineas(c('Venezuela'),
           hitos=FALSE)
 
 #3)lineas verticales comparacion entre paises
-gg_comp_paises(paises=c('Argentina','Venezuela', 'Colombia'),
+gg_comp_paises(paises=c('Venezuela', 'Colombia'),
                sub_nac=FALSE,
                post=FALSE, 
-               weekend=TRUE, 
-               inicio='2020-05-27',
+               weekend=FALSE, 
+               inicio='2020-09-01',
                #fin='2020-05-14',
-               elemento='lugares_de_trabajo',
+               elemento='zonas_residenciales',
                hitos=TRUE)
 
 #4) comparacion paises en un mismo plano facet_grid
