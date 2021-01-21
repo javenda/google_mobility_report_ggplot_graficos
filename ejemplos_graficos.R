@@ -10,7 +10,8 @@ source('02_funciones_generacion_graficos.R')
 # fin=FALSE)seleccion intervalo fecha fin formato ('Y-m-d')
 # elemento= tipo de dato del GMR q se grafica. lista en 'tipo_datos'
 # hitos= muestra barra vertical con fechas especiales
-#OPCIONES:
+
+#OPCIONES disponibles para el parametro 'elemento':
 #'lugares_de_trabajo'
 #'supermercados_y_farmacias'
 #'parques'
@@ -19,7 +20,7 @@ source('02_funciones_generacion_graficos.R')
 #'tiendas_y_ocio'
 
 
-
+#EJEMPLOS
 #1) grafico barras verticales. filtra pais y elemento
 gg_barra(c('Venezuela'),
          sub_nac=FALSE,

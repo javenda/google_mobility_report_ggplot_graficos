@@ -19,7 +19,8 @@ carga_paquetes <- function(){
   library(unikn) 
   
 }
-directorios <- list
+
+dir.create(file.path(getwd(), 'reports'), showWarnings = FALSE)
 
 
 carga_paquetes()
